@@ -1,0 +1,155 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://assets/shoot.png" type="Texture" id=1]
+[ext_resource path="res://assets/reticle.png" type="Texture" id=2]
+[ext_resource path="res://src/Player.gd" type="Script" id=3]
+[ext_resource path="res://assets/dpcomic-crowned/dpcomic-crowned.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.75
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("../CanvasLayer/Control/Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "idle"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("../CanvasLayer/Control/Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "reload"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("../CanvasLayer/Control/Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 2, 0 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "shoot"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("../CanvasLayer/Control/Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.01, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 0 ]
+}
+
+[sub_resource type="DynamicFont" id=6]
+size = 400
+font_data = ExtResource( 4 )
+
+[sub_resource type="Theme" id=7]
+default_font = SubResource( 6 )
+
+[node name="Player" type="KinematicBody"]
+script = ExtResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+shape = SubResource( 1 )
+
+[node name="RayCast" type="RayCast" parent="."]
+enabled = true
+cast_to = Vector3( 0, 0, -2000 )
+
+[node name="Camera" type="Camera" parent="."]
+current = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../CollisionShape")
+anims/RESET = SubResource( 2 )
+anims/idle = SubResource( 4 )
+anims/reload = SubResource( 5 )
+anims/shoot = SubResource( 3 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer/Control"]
+position = Vector2( 250, -256 )
+texture = ExtResource( 1 )
+hframes = 4
+frame = 1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -16.0
+margin_top = -16.0
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AmmoLabel" type="Label" parent="CanvasLayer"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -108.0
+margin_top = -216.0
+margin_right = 108.0
+margin_bottom = 216.0
+theme = SubResource( 7 )
+text = "6"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReloadTimer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="AmmoLabelTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="ReloadTimer" to="." method="_on_ReloadTimer_timeout"]
+[connection signal="timeout" from="AmmoLabelTimer" to="." method="_on_AmmoLabelTimer_timeout"]
