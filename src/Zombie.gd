@@ -12,19 +12,25 @@ var dead = false
 var path = []
 
 func _ready():
-	anim_player.play("walk")
 	add_to_group("zombies")
+	anim_player.play("walk")
+
+func set_player(p):
+	player = p
+
+func set_navigation(n):
+	navigation = n
 
 func _physics_process(delta):
 	if dead:
 		return
 	if player == null or navigation == null:
 		return
-	
+
 	# Create the path to the player
 	if path_timer.is_stopped():
 		path_timer.start()
-	
+
 	# Walk the path
 	var direction = Vector3()
 	if path.size() > 0:
@@ -51,12 +57,6 @@ func kill():
 	dead = true
 	$CollisionShape.disabled = true
 	anim_player.play("die")
-
-func set_player(p):
-	player = p
-
-func set_navigation(n):
-	navigation = n
 
 func _on_PathTimer_timeout():
 	# Calculate the path to the player

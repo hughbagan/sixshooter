@@ -51,7 +51,7 @@ func _physics_process(delta):
 		reload_timer.start()
 		rotation_degrees.x += 4.0 # gun recoil
 		ammo_label.text = str(ammo)
-	
+
 	if ammo < 6:
 		if Input.is_action_just_pressed("reload_1") and reload==0:
 			reload = 1
@@ -74,7 +74,7 @@ func _physics_process(delta):
 	# "peek" function-- show how much ammo you have
 	# Might defeat the purpose of the game though?
 	# (To remember how much ammo you have in your head)
-	# Maybe make it take up time and screen space, 
+	# Maybe make it take up time and screen space,
 	# so it's naturally just better to count rounds in your head.
 	if Input.is_action_just_pressed("peek_ammo"):
 		ammo_label.show()
