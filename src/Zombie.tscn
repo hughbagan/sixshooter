@@ -79,7 +79,7 @@ hframes = 5
 vframes = 2
 
 [node name="PathTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.1
 one_shot = true
 autostart = true
 
