@@ -18,6 +18,7 @@ config/icon="res://assets/icon.png"
 [autoload]
 
 PauseManager="*res://src/PauseManager.gd"
+Globals="*res://src/Globals.gd"
 
 [display]
 

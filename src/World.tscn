@@ -44,12 +44,18 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4172, 1.8539, 19.0378 )
 
 [node name="Spawner2" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0165939, 1.586, -33.6925 )
+batch_size = 3
+batch_timer_time = 20.0
 
 [node name="Spawner3" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.23, 1.586, 37.9932 )
+batch_size = 3
+batch_timer_time = 20.0
 
 [node name="Spawner4" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39.791, 1.586, 0.366249 )
+batch_size = 1
+batch_timer_time = 15.0
 
 [node name="Navigation" type="Navigation" parent="."]
 

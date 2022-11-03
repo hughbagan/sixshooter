@@ -50,7 +50,6 @@ func _physics_process(delta):
 			col.kill()
 		reload_timer.start()
 		rotation_degrees.x += 4.0 # gun recoil
-		ammo_label.text = str(ammo)
 
 	if ammo < 6:
 		if Input.is_action_just_pressed("reload_1") and reload==0:
@@ -77,11 +76,18 @@ func _physics_process(delta):
 	# Maybe make it take up time and screen space,
 	# so it's naturally just better to count rounds in your head.
 	if Input.is_action_just_pressed("peek_ammo"):
+		ammo_label.text = str(ammo)
 		ammo_label.show()
 		ammo_label_timer.start()
 
 func kill():
-	get_tree().reload_current_scene()
+	PauseManager.pause()
+	show_score()
+
+func show_score():
+	ammo_label.text = str(Globals.score)
+	ammo_label.set_margins_preset(ammo_label.PRESET_CENTER)
+	ammo_label.show()
 
 func _on_ReloadTimer_timeout():
 	reload_timer.stop()
@@ -89,3 +95,8 @@ func _on_ReloadTimer_timeout():
 
 func _on_AmmoLabelTimer_timeout():
 	ammo_label.hide()
+
+func _on_Zombie_died():
+	if (Globals.score % 1000) == 0:
+		show_score()
+		ammo_label_timer.start(1.0)

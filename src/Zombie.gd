@@ -11,8 +11,12 @@ var navigation = null
 var dead = false
 var path = []
 
+signal died
+
 func _ready():
 	add_to_group("zombies")
+	if player:
+		connect("died", player, "_on_Zombie_died")
 	anim_player.play("walk")
 
 func set_player(p):
@@ -46,7 +50,7 @@ func _physics_process(delta):
 		var col = move_and_collide(direction.normalized() * step_size)
 		if col != null:
 			if col.get_collider().name == "Player":
-				PauseManager.pause()
+				col.get_collider().kill()
 		# Look in the direction we're travelling
 		direction.y = 0 # only look left/right, not up/down
 		if direction:
@@ -57,6 +61,8 @@ func kill():
 	dead = true
 	$CollisionShape.disabled = true
 	anim_player.play("die")
+	Globals.score += 100
+	emit_signal("died")
 
 func _on_PathTimer_timeout():
 	# Calculate the path to the player
