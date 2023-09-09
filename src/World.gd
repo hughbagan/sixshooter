@@ -1,7 +1,7 @@
-extends Spatial
+extends Node3D
 
-onready var navigation = $Navigation
-onready var player = $Player
+@onready var navigation = $Navigation
+@onready var player = $Player
 
 func _ready():
 	# Mouse invisible and stuck to center of screen

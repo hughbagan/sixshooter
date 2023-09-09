@@ -1,7 +1,7 @@
 extends Node
 
 func _ready():
-	pause_mode = Node.PAUSE_MODE_PROCESS # exclude from pause
+	process_mode = Node.PROCESS_MODE_ALWAYS # exclude from pause
 
 func _input(event):
 	if event is InputEventMouseButton:

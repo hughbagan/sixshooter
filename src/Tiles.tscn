@@ -1,34 +1,37 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=3 uid="uid://buyk2ka4gtehw"]
 
-[ext_resource path="res://assets/floor.png" type="Texture" id=1]
-[ext_resource path="res://assets/wall.png" type="Texture" id=2]
+[ext_resource type="Texture2D" uid="uid://deb1gyw07yj1g" path="res://assets/wall.png" id="2"]
 
-[sub_resource type="SpatialMaterial" id=13]
-albedo_texture = ExtResource( 2 )
+[sub_resource type="StandardMaterial3D" id="13"]
+albedo_texture = ExtResource("2")
 
-[sub_resource type="CubeMesh" id=2]
-material = SubResource( 13 )
+[sub_resource type="BoxMesh" id="2"]
+material = SubResource("13")
 
-[sub_resource type="ConvexPolygonShape" id=15]
-points = PoolVector3Array( 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1 )
+[sub_resource type="BoxShape3D" id="BoxShape3D_jx68d"]
 
-[sub_resource type="PlaneMesh" id=4]
+[sub_resource type="PlaneMesh" id="4"]
 
-[sub_resource type="SpatialMaterial" id=5]
-albedo_texture = ExtResource( 1 )
+[sub_resource type="BoxShape3D" id="BoxShape3D_ex2b8"]
+size = Vector3(2, 0.1, 2)
 
-[node name="Tiles" type="Spatial"]
+[node name="Tiles" type="Node3D"]
 
-[node name="Wall" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-mesh = SubResource( 2 )
-material/0 = null
+[node name="Wall" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
+visible = false
+mesh = SubResource("2")
 
-[node name="StaticBody" type="StaticBody" parent="Wall"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Wall"]
 
-[node name="CollisionShape" type="CollisionShape" parent="Wall/StaticBody"]
-shape = SubResource( 15 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall/StaticBody3D"]
+shape = SubResource("BoxShape3D_jx68d")
 
-[node name="Floor" type="MeshInstance" parent="."]
-mesh = SubResource( 4 )
-material/0 = SubResource( 5 )
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("4")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+shape = SubResource("BoxShape3D_ex2b8")

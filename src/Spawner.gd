@@ -1,15 +1,15 @@
 extends Sprite3D
 
-onready var batch_timer = $BatchTimer
-onready var spawn_timer = $SpawnTimer
+@onready var batch_timer = $BatchTimer
+@onready var spawn_timer = $SpawnTimer
 
 var zombie_scene = preload("res://src/Zombie.tscn")
 var world = null
 var player = null
 var navigation = null
-export var batch_size = 5
-export var batch_timer_time = 30.0
-export var spawn_timer_time = 2.0
+@export var batch_size = 1
+@export var batch_timer_time = 30.0
+@export var spawn_timer_time = 2.0
 var batch_count = 0
 
 func _ready():
@@ -32,8 +32,8 @@ func _on_BatchTimer_timeout():
 	spawn_timer.start(spawn_timer_time)
 
 func _on_SpawnTimer_timeout():
-	var new_enemy = zombie_scene.instance()
-	new_enemy.set_translation(Vector3(self.translation.x, new_enemy.translation.y, self.translation.z))
+	var new_enemy = zombie_scene.instantiate()
+	new_enemy.set_position(Vector3(self.position.x, new_enemy.position.y, self.position.z))
 	if navigation:
 		new_enemy.set_navigation(navigation)
 	if player:
