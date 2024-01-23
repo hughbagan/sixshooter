@@ -1,11 +1,13 @@
 class_name Actor extends RigidBody3D
 
 const MOVE_SPEED = 5.0
+const MOUSE_SENS = 0.3
 
 @onready var raycast = $RayCast3D
 @onready var anim_player = $AnimationPlayer
 @onready var path_timer = $PathTimer
 @onready var hitbox = $Hitbox
+@onready var camera = $Camera3D
 
 enum {PUNCH_NONE, PUNCH_LEFT, PUNCH_RIGHT}
 var punch_mode = PUNCH_NONE
@@ -37,17 +39,37 @@ func _physics_process(delta):
 	if dead:
 		return
 	hitbox.global_position = global_position
+	camera.global_position = global_position
 
-	var dir = Vector3()
-	dir.x = Input.get_action_strength("move_right_2") - Input.get_action_strength("move_left_2")
-	dir.z = Input.get_action_strength("move_backwards_2") - Input.get_action_strength("move_forwards_2")
-	#add_constant_central_force(dir.normalized() / 2)
-	apply_central_impulse(dir.normalized() / 2)
+
+	var move_vec = Vector3()
+	var cam_basis = camera.global_transform.basis
+	print(cam_basis)
+	var modded_basis = cam_basis.rotated(cam_basis.x, PI*0.5)
+	if Input.is_action_pressed("move_forwards_2"):
+		#print(modded_basis)
+		move_vec = -cam_basis.z
+	if Input.is_action_pressed("move_backwards_2"):
+		#print(modded_basis)
+		move_vec = cam_basis.z
+	if Input.is_action_pressed("move_left_2"):
+		#print(modded_basis)
+		move_vec = cam_basis.z.rotated(Vector3(0, 0, 1), PI*0.5)
+	if Input.is_action_pressed("move_right_2"):
+		#print(modded_basis)
+		move_vec = cam_basis.z.rotated(Vector3(0, 0, 1), -PI*0.5)
+#	move_vec = move_vec.rotated(Vector3(0, 1, 0), rotation.y)
+	apply_central_impulse(move_vec.normalized() / 2)
 
 #	if move_speed > 0.0:
 #		direction = direction.normalized()
 #		direction = direction.rotated(Vector3(0, 1, 0), rotation.y)
 #		move_and_collide(direction * move_speed * delta)
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+			camera.rotation_degrees.y -= MOUSE_SENS * event.relative.x
 
 func kill():
 	dead = true
