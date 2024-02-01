@@ -37,7 +37,7 @@ func _physics_process(delta):
 		return
 #	if player == null:
 #		return
-	
+
 	if move_speed > 0.0:
 		direction = direction.normalized()
 		direction = direction.rotated(Vector3(0, 1, 0), rotation.y)

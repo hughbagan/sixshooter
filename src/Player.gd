@@ -40,9 +40,8 @@ func _physics_process(delta):
 		move_vec.x -= 1
 	if Input.is_action_pressed("move_right"):
 		move_vec.x += 1
-	move_vec = move_vec.normalized()
-	move_vec = move_vec.rotated(Vector3(0, 1, 0), rotation.y)
-	move_and_collide(move_vec * MOVE_SPEED * delta)
+	velocity = move_vec.normalized().rotated(Vector3(0,1,0), rotation.y) * MOVE_SPEED
+	move_and_slide()
 
 	var left = Input.is_action_just_pressed("punch_left")
 	var right = Input.is_action_just_pressed("punch_right")
@@ -61,10 +60,16 @@ func _physics_process(delta):
 		if raycast.is_colliding() and col.has_method("kill"):
 			if col.hitbox:
 				if punch_range.overlaps_area(col.hitbox):
-					var to = raycast.to_global(raycast.target_position)
-					print("PUSH", to, global_transform.origin.direction_to(to))
+					var pos_raised = Vector3(
+						raycast.target_position.x,
+						raycast.target_position.y+2000,
+						raycast.target_position.z
+					)
+					var to = raycast.to_global(pos_raised)
 					var dir = global_transform.origin.direction_to(to)
 					col.apply_central_impulse(dir.normalized()*10)
+					#print("PUSH", raycast.target_position, pos_raised, to, dir, dir.normalized()*10)
+					col.hit = true
 		reload_timer.start()
 		#rotation_degrees.x += 4.0 # gun recoil
 	else:
@@ -83,7 +88,6 @@ func _on_ReloadTimer_timeout():
 	reload_timer.stop()
 	left_sprite.hide()
 	right_sprite.hide()
-	print("ready")
 
 func _on_AmmoLabelTimer_timeout():
 	ammo_label.hide()

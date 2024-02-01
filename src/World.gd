@@ -9,5 +9,6 @@ func _ready():
 
 	get_tree().call_group("zombies", "set_navigation", navigation)
 	get_tree().call_group("spawners", "set_navigation", navigation)
+	get_tree().call_group("zombies", "set_player", player)
 	get_tree().call_group("spawners", "set_player", player)
 	get_tree().call_group("spawners", "set_world", self)

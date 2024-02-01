@@ -116,6 +116,7 @@ shape = SubResource("CylinderShape3D_ac6d3")
 target_position = Vector3(0, 0, -2000)
 
 [node name="Camera3D" type="Camera3D" parent="."]
+current = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../CollisionShape3D")
